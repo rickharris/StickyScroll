@@ -5,7 +5,7 @@ Make elements stick to the top of your page as you scroll
 
 ##Usage:
 Generic usage - element is contained inside the 'body' element
-$(element).stickScroll(options)
+$(element).stickyScroll(options)
 
 If the element is to be contained inside one of its parents, (you want to keep it inside the main content area, and out of the header and footer) then provide a selector for that parent element.
 
