@@ -1,4 +1,4 @@
-#StickyScroll by Rick Harris
+#jQuery StickyScroll
 
 Make elements stick to the top of your page as you scroll
 
@@ -10,7 +10,7 @@ $(element).stickScroll(options)
 If the element is to be contained inside one of its parents, (you want to keep it inside the main content area, and out of the header and footer) then provide a selector for that parent element.
 
 Ex:
-$(element).stickScroll({ container: '#my-wrapper' })
+$(element).stickyScroll({ container: '#my-wrapper' })
 
 If you don't have a particular element you want the sticky element contained to, but still need control of it's boundaries, use the manual mode to provide upper and lower bounds
 
@@ -21,7 +21,7 @@ and bottomBoundary is relative to the bottom of the document
 
 
 ##Notes:
-- Requires jQuery 1.4+
+- Requires jQuery 1.4+ or include the offset.js file from newer jQuery source (http://github.com/jquery/jquery/blob/master/src/offset.js)
 - Disclaimer: Requires position: fixed support, so no IE6
 - Possible enhancements to com: 
 	- Demo page
