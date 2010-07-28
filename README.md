@@ -1,4 +1,4 @@
-#StickyScroll by Rick Harris
+#jQuery StickyScroll
 
 Make elements stick to the top of your page as you scroll
 
@@ -21,7 +21,7 @@ and bottomBoundary is relative to the bottom of the document
 
 
 ##Notes:
-- Requires jQuery 1.4+
+- Requires jQuery 1.4+ or include the offset.js file from newer jQuery source (http://github.com/jquery/jquery/blob/master/src/offset.js)
 - Disclaimer: Requires position: fixed support, so no IE6
 - Possible enhancements to com: 
 	- Demo page
