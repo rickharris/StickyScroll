@@ -31,22 +31,28 @@
 		var settings = $.extend({
 				mode: 'auto', // 'auto' or 'manual', but anything other than auto will be treated as manual
 				container: $('body'),
-				topBoundary: null,
 				bottomBoundary: null
 			}, options);
 			
 		// make sure user input is a jQuery object
 		settings.container = $(settings.container);
+		if(!settings.container.length) {
+			if(console) {
+				console.log('StickyScroll: the element ' + options.container + ' does not exist, we\'re throwing in the towel');
+			}
+			return;
+		}
 		
-		settings = $.extend(settings, {
-			topBoundary: settings.mode === 'auto' ? settings.container.offset().top : settings.topBoundary,
-			bottomBoundary: settings.mode === 'auto' ? $(document).height() - (settings.container.offset().top + settings.container.attr('offsetHeight')) : settings.bottomBoundary
-		});
+		// calculate automatic bottomBoundary
+		if(settings.mode === 'auto') {
+			settings.bottomBoundary = $(document).height() - settings.container.offset().top - settings.container.attr('offsetHeight');
+		}
 		
 		return this.each(function() {
 			
 			var $this = $(this),
 				height = $this.attr('offsetHeight'),
+				topOffset = $this.offset().top,
 				leftOffset = $this.offset().left;
 				
 			function onScroll() {
@@ -57,7 +63,7 @@
 					$this.offset({ top: $(document).height() - settings.bottomBoundary - height, left: leftOffset });
 					settings.container.addClass('sticky-processed');
 				}
-				else if(top > settings.topBoundary) {
+				else if(top > topOffset) {
 					$this.css({
 						position: 'fixed',
 						left: leftOffset,
