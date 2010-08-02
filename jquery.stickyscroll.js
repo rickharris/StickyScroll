@@ -16,11 +16,9 @@
  * $(element).stickScroll({ container: '#my-wrapper' })
  * 
  * If you don't have a particular element you want the sticky element contained to,
- * but still need control of it's boundaries, use the manual mode to provide
- * upper and lower bounds
+ * but still need control of its bottom boundary, use the manual mode
  * Ex:
- * $(element).stickyScroll({ mode: 'manual', 'topBoundary': 50, 'bottomBoundary': 100 })
- * where topBoundary is relative to the top of the document 
+ * $(element).stickyScroll({ mode: 'manual', 'bottomBoundary': 100 })
  * and bottomBoundary is relative to the bottom of the document
  * 
 */
@@ -81,7 +79,7 @@
 					});
 					settings.container.removeClass('sticky-processed');
 				}
-			}
+			}();
 			
 			onScroll();
 			$(window).scroll(onScroll);
