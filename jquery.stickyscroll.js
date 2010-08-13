@@ -52,7 +52,7 @@
 				height = $this.attr('offsetHeight'),
 				topOffset = $this.offset().top,
 				leftOffset = $this.offset().left;
-				
+			
 			function onScroll() {
 				var top = $(document).scrollTop(),
 					bottom = $(document).height() - top - height;
@@ -70,7 +70,7 @@
 					});
 					settings.container.addClass('sticky-processed');
 				}
-				else if(top < settings.topBoundary) {
+				else if(top < topOffset) {
 					$this.css({
 						position: '',
 						left: '',
@@ -79,7 +79,7 @@
 					});
 					settings.container.removeClass('sticky-processed');
 				}
-			}();
+			};
 			
 			onScroll();
 			$(window).scroll(onScroll);
