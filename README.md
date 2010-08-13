@@ -5,7 +5,7 @@ Make elements stick to the top of your page as you scroll
 
 ##Usage:
 Generic usage - element is contained inside the 'body' element
-$(element).stickyScroll(options)
+$(element).stickyScroll()
 
 If the element is to be contained inside one of its parents, (for instance, if you want to keep it inside the main content area, but keep it out of the header and footer) then provide a selector for that parent element.
 
@@ -16,8 +16,7 @@ If you don't have a particular element you want the sticky element contained to,
 
 Ex:
 $(element).stickyScroll({ mode: 'manual', 'bottomBoundary': 100 })
-where topBoundary is relative to the top of the document 
-and bottomBoundary is relative to the bottom of the document
+where bottomBoundary is relative to the bottom of the document
 
 
 ##Notes:
