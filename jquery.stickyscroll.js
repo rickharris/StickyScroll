@@ -3,7 +3,6 @@
  * written by Rick Harris - @iamrickharris
  * 
  * Requires jQuery 1.4+
- * Disclaimer: Requires position: fixed support, so no IE6
  * 
  * Make elements stick to the top of your page as you scroll
  *
@@ -21,6 +20,8 @@
  * $(element).stickyScroll({ mode: 'manual', 'bottomBoundary': 100 })
  * and bottomBoundary is relative to the bottom of the document
  * 
+ * With no options specified, it treat the body element as its container
+ *
 */
 
 (function($) {
