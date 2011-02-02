@@ -26,15 +26,21 @@
 
 (function($) {
 	$.fn.stickyScroll = function(options) {
-	
+
 		var settings = $.extend({
 				mode: 'auto', // 'auto' or 'manual', but anything other than auto will be treated as manual
 				container: $('body'),
-				bottomBoundary: null
+				bottomBoundary: null,
+				easing: 'linear',
+				duration: 500,
+				queue: false,
+				stickDisable : false,
+				closeChar: '^',
+				stickDisableFloat: 'right',
+				stickDisableContainer: 'a'
 			}, options);
 
 		$.fn.stickyScrollEnable = function() {
-
 			// make sure user input is a jQuery object
 			settings.container = $(settings.container);
 			if(!settings.container.length) {
@@ -43,6 +49,22 @@
 				}
 				return;
 			}
+			
+			var $getObject = $(this).selector;
+			var options =  $.extend(settings, options);
+			if(options.stickDisable == true){  
+				this.css('position','relative');
+				this.prepend('<'+options.stickDisableContainer+ ' class="scrollFixIt">' + options.closeChar + '</'+options.stickDisableContainer+ '>');
+				jQuery($getObject + ' .scrollFixIt').css('position','relative');
+				jQuery($getObject + ' .scrollFixIt').css('float',options.stickDisableFloat);
+				jQuery($getObject + ' .scrollFixIt').css('cursor','pointer');
+				jQuery($getObject + ' .scrollFixIt').click(function() {
+					jQuery($getObject).animate({ top: "0px" },
+						{ queue: options.queue, easing: options.easing, duration: options.duration });
+					jQuery(window).unbind();
+					jQuery('.scrollFixIt').remove();
+				});
+			} 
 
 			// calculate automatic bottomBoundary
 			if(settings.mode === 'auto') {
@@ -56,6 +78,7 @@
 					topOffset = $this.offset().top;
 
 				function onScroll() {
+				
 					var top = $(document).scrollTop(),
 						bottom = $(document).height() - top - height;
 
@@ -94,13 +117,13 @@
 			});
 			$(window).unbind('.stickyscroll');
 		}
-	
+
 		if (options === 'reset') {
 			return $(this).stickyScrollReset();
 		}
 		else {
 			return $(this).stickyScrollEnable();
 		}
-	
+
 	};
 })(jQuery);

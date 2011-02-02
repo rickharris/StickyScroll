@@ -22,6 +22,6 @@ where bottomBoundary is relative to the bottom of the document
 ##Notes:
 - Requires jQuery 1.4+ or include the offset.js file from newer jQuery source (http://github.com/jquery/jquery/blob/master/src/offset.js)
 - <del>Disclaimer: Requires position: fixed support, so no IE6</del> No longer uses fixed positioning, only mimics it. Much better support now for mobile/tablet.
-- Possible enhancements to com: 
+- Possible enhancements to come: 
 	- Fluid/elastic layout support
 	- Support for callbacks when a boundary is reached
