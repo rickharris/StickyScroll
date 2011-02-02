@@ -115,7 +115,7 @@
   			
 		  },
 		  
-		  disable : function() {
+		  reset : function() {
   			return this.each(function() {
   			  var el = $(this),
   			    id = el.data('sticky-id');
