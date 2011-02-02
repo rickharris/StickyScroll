@@ -28,10 +28,22 @@
 	$.fn.stickyScroll = function(options) {
 	
 		var methods = {
+		  
 		  init : function(options) {
 		    
-		    var settings = $.extend({
-  				mode: 'auto', // 'auto' or 'manual', but anything other than auto will be treated as manual
+		    var settings;
+		    
+		    if (options.mode !== 'auto' && options.mode !== 'manual') {
+		      if (options.container) {
+		        options.mode = 'auto';
+		      }
+		      if (options.bottomBoundary) {
+		        options.mode = 'manual';
+		      }
+		    }
+		    
+		    settings = $.extend({
+  				mode: 'auto', // 'auto' or 'manual'
   				container: $('body'),
   				bottomBoundary: null
   			}, options);
@@ -40,23 +52,29 @@
   			settings.container = $(settings.container);
   			if(!settings.container.length) {
   				if(console) {
-  					console.log('StickyScroll: the element ' + options.container + ' does not exist, we\'re throwing in the towel');
+  					console.log('StickyScroll: the element ' + options.container +
+  					  ' does not exist, we\'re throwing in the towel');
   				}
   				return;
   			}
 
   			// calculate automatic bottomBoundary
   			if(settings.mode === 'auto') {
-  				settings.bottomBoundary = $(document).height() - settings.container.offset().top - settings.container.attr('offsetHeight');
+  				settings.bottomBoundary = $(document).height()
+  				                          - settings.container.offset().top
+  				                          - settings.container.attr('offsetHeight');
   			}
 
-  			return this.each(function() {
+  			return this.each(function(index) {
 
   				var el = $(this),
+  				  id = Date.now() + index,
   					height = el.attr('offsetHeight'),
   					topOffset = el.offset().top;
 
-  				$(window).bind('scroll.stickyscroll', function() {
+          el.data('sticky-id', id)
+          
+  				$(window).bind('scroll.stickyscroll-' + id, function() {
   				  var top = $(document).scrollTop(),
   						bottom = $(document).height() - top - height;
 
@@ -87,21 +105,26 @@
   			});
   			
 		  },
+		  
 		  disable : function() {
-  			$(window).unbind('.stickyscroll');
   			return this.each(function() {
-  				$(this).css({
+  			  var el = $(this),
+  			    id = el.data('sticky-id');
+  				el.css({
   					position: '',
   					top: '',
   					bottom: ''
   				});
+          $(window).unbind('.stickyscroll-' + id);
   			});
 		  }
+		  
 		};
 		
 		// if options is a valid method, execute it
 		if (methods[options]) {
-		  return methods[options].apply(this, Array.prototype.slice.call(arguments, 1));
+		  return methods[options].apply(this,
+		    Array.prototype.slice.call(arguments, 1));
 		}
 		// or, if options is a config object, or no options are passed, init
 		else if (typeof options === 'object' || !options) {
