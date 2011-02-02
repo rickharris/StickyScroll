@@ -81,19 +81,28 @@
   					if(bottom <= settings.bottomBoundary) {
   						el.offset({
   						  top: $(document).height() - settings.bottomBoundary - height
-  						}).addClass('sticky-stopped');
+  						})
+  						.removeClass('sticky-active')
+  						.removeClass('sticky-inactive')
+  						.addClass('sticky-stopped');
   					}
   					else if(top > topOffset) {
   						el.offset({
   						  top: $(window).scrollTop()
-  						}).addClass('sticky-active');
+  						})
+  						.removeClass('sticky-stopped')
+  						.removeClass('sticky-inactive')
+  						.addClass('sticky-active');
   					}
   					else if(top < topOffset) {
   						el.css({
   							position: '',
   							top: '',
   							bottom: ''
-  						}).removeClass('sticky-inactive');
+  						})
+  						.removeClass('sticky-stopped')
+  						.removeClass('sticky-active')
+  						.addClass('sticky-inactive');
   					}
   				});
   				
@@ -110,11 +119,17 @@
   			return this.each(function() {
   			  var el = $(this),
   			    id = el.data('sticky-id');
+  			    
   				el.css({
   					position: '',
   					top: '',
   					bottom: ''
-  				});
+  				})
+  				.removeClass('sticky-stopped')
+  				.removeClass('sticky-active')
+  				.removeClass('sticky-inactive')
+  				.removeClass('sticky-processed');
+  				
           $(window).unbind('.stickyscroll-' + id);
   			});
 		  }
