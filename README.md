@@ -1,27 +1,33 @@
 #jQuery StickyScroll
 
-Make elements stick to the top of your page as you scroll
+Make elements stick to browser window as you scroll
 
 
 ##Usage:
-Generic usage - element is contained inside the 'body' element
-$(element).stickyScroll()
+- `jquery_collection.stickyScroll({ container: $(container-element) })`
 
-If the element is to be contained inside one of its parents, (for instance, if you want to keep it inside the main content area, but keep it out of the header and footer) then provide a selector for that parent element.
+  This is "auto" mode. The sticky element will never cross the boundaries
+  of the specified container.
+  
+- `jquery_collection.stickyScroll()`
 
-Ex:
-$(element).stickyScroll({ container: '#my-wrapper' })
+  This is also "auto" mode, but the container will be the `body` tag.
+  
+- `jquery_collection.stickyScroll({ topBoundary: '100px', bottomBoundary: '200px' })`
 
-If you don't have a particular element you want the sticky element contained to, but still need control of its bottom boundary, use the manual mode
+  This is "manual" mode. The boundaries are relative to the top and bottom of
+  the document, and the sticky element will never cross those boundaries. So,
+  in the example given, the top of the sticky element(s) will never be above
+  100 pixels from the top of the document and the bottom of the sticky
+  element(s) will never be below 200 pixels from the bottom of the document.
+  
+- `jquery_collection.stickyScroll('reset')`
 
-Ex:
-$(element).stickyScroll({ mode: 'manual', 'bottomBoundary': 100 })
-where bottomBoundary is relative to the bottom of the document
-
-
+  Use this command to rid an element of any stickiness
+  
 ##Notes:
 - Requires jQuery 1.4+ or include the offset.js file from newer jQuery source (http://github.com/jquery/jquery/blob/master/src/offset.js)
 - <del>Disclaimer: Requires position: fixed support, so no IE6</del> No longer uses fixed positioning, only mimics it. Much better support now for mobile/tablet.
 - Possible enhancements to com: 
-	- Fluid/elastic layout support
+	- <del>Fluid/elastic layout support</del> Now supports fluid layouts! (best in "auto" mode)
 	- Support for callbacks when a boundary is reached

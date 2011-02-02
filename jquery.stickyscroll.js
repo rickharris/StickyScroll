@@ -6,21 +6,7 @@
  * 
  * Make elements stick to the top of your page as you scroll
  *
- * Usage: $(element).stickyScroll(options)
- * 
- * If the element is to be contained inside one of its parents, 
- * (you want to keep it inside the main content area, and out of the header and footer)
- * then provide a selector for that parent element
- * Ex:
- * $(element).stickyScroll({ container: '#my-wrapper' })
- * 
- * If you don't have a particular element you want the sticky element contained to,
- * but still need control of its bottom boundary, use the manual mode
- * Ex:
- * $(element).stickyScroll({ mode: 'manual', 'bottomBoundary': 100 })
- * and bottomBoundary is relative to the bottom of the document
- * 
- * With no options specified, it treat the body element as its container
+ * See README for details
  *
 */
 
