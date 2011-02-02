@@ -45,8 +45,22 @@
 		    settings = $.extend({
   				mode: 'auto', // 'auto' or 'manual'
   				container: $('body'),
+  				topBoundary: null,
   				bottomBoundary: null
   			}, options);
+  			
+  			function bottomBoundary() {
+    		  return $(document).height() - settings.container.offset().top
+            - settings.container.attr('offsetHeight');
+    		}
+
+    		function topBoundary() {
+    		  return settings.container.offset().top
+    		}
+
+    		function elHeight(el) {
+    		  return $(el).attr('offsetHeight');
+    		}
   			
   			// make sure user input is a jQuery object
   			settings.container = $(settings.container);
@@ -60,21 +74,20 @@
 
   			// calculate automatic bottomBoundary
   			if(settings.mode === 'auto') {
-  				settings.bottomBoundary = $(document).height()
-  				                          - settings.container.offset().top
-  				                          - settings.container.attr('offsetHeight');
+  			  settings.topBoundary = topBoundary();
+  				settings.bottomBoundary = bottomBoundary();
   			}
 
   			return this.each(function(index) {
 
   				var el = $(this),
+  				  win = $(window),
   				  id = Date.now() + index,
-  					height = el.attr('offsetHeight'),
-  					topOffset = el.offset().top;
-
-          el.data('sticky-id', id)
+  					height = elHeight(el);
+  					
+          el.data('sticky-id', id);
           
-  				$(window).bind('scroll.stickyscroll-' + id, function() {
+  				win.bind('scroll.stickyscroll-' + id, function() {
   				  var top = $(document).scrollTop(),
   						bottom = $(document).height() - top - height;
 
@@ -86,7 +99,7 @@
   						.removeClass('sticky-inactive')
   						.addClass('sticky-stopped');
   					}
-  					else if(top > topOffset) {
+  					else if(top > settings.topBoundary) {
   						el.offset({
   						  top: $(window).scrollTop()
   						})
@@ -94,7 +107,7 @@
   						.removeClass('sticky-inactive')
   						.addClass('sticky-active');
   					}
-  					else if(top < topOffset) {
+  					else if(top < settings.topBoundary) {
   						el.css({
   							position: '',
   							top: '',
@@ -106,10 +119,19 @@
   					}
   				});
   				
+  				win.bind('resize.stickyscroll-' + id, function() {
+  				  if (settings.mode === 'auto') {
+  				    settings.topBoundary = topBoundary();
+  				    settings.bottomBoundary = bottomBoundary();
+  				  }
+  				  height = elHeight(el);
+  				  $(this).scroll();
+  				})
+  				
   				el.addClass('sticky-processed');
   				
   				// start it off
-  				$(window).scroll();
+  				win.scroll();
 
   			});
   			
