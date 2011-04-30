@@ -14,11 +14,19 @@
 	</head>
 	<body>
 		<div class="header">
-			<h1>StickyScroll Demo</h1>
-			<h4>So your sidebar can follow anywhere you go</h4>
-			<p>Explanation: In this demo, the two columns are wrapped in a <code>div.container</code>, and we want the sidebar to stay within, so we the code used is <code>$('.sidebar').stickyScroll({ container: '.container' })</code>.</p>
-			<p><em>Important:</em> the container element <em>must</em> be clearfixed, otherwise its height is reported as 0 and all of this plugin's calculations fail.</p>
-			<p>What about elements that don't have such a convenient container? See the <a href="manual-demo.html">demo of 'manual' mode</a>.</p>
+			<h1>StickyScroll Issue</h1>
+      <p>
+        This is a super-basic demo to show the limitations of the
+        <code>onscroll</code> event. The left sidebar is supposed to follow you
+        as you scroll down the page smoothly and without fixed positioning, but
+        it seems that the onscroll event doesn't fire enough to make that
+        a possibility. The reason we avoid fixed positioning is to be able to
+        support mobile and tablet devices and fluid layouts.
+      </p>
+      <ul>
+        <li>Support for mobile/tablet devices</li>
+        <li>Support for fluid layouts</li>
+      </ul>
 		</div>
 		<div class="container">
 		  <div id="sidebar-1" class="sidebar">
