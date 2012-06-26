@@ -68,7 +68,7 @@
 
           var el = $(this),
             win = $(window),
-            id = Date.now() + index,
+            id = Date.parse(new Date()) + index,
             height = elHeight(el);
             
           el.data('sticky-id', id);
