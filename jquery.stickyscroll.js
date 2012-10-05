@@ -19,6 +19,8 @@
         
         var settings;
         
+        options = $.extend(options, {});
+        
         if (options.mode !== 'auto' && options.mode !== 'manual') {
           if (options.container) {
             options.mode = 'auto';
