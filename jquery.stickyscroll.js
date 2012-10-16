@@ -69,8 +69,9 @@
           var el = $(this),
             win = $(window),
             id = Date.now() + index,
-            height = elHeight(el);
-            
+            height = elHeight(el),
+	          left = el.offset().left;
+
           el.data('sticky-id', id);
           
           win.bind('scroll.stickyscroll-' + id, function() {
@@ -87,8 +88,12 @@
             }
             else if(top > settings.topBoundary) {
               el.offset({
-                top: $(window).scrollTop()
-              })
+//                top: $(window).scrollTop()
+              }).css({
+		              position: 'fixed',
+		              top     : 0,
+		              left    : left
+	              })
               .removeClass('sticky-stopped')
               .removeClass('sticky-inactive')
               .addClass('sticky-active');
@@ -97,6 +102,7 @@
               el.css({
                 position: '',
                 top: '',
+	              left: '',
                 bottom: ''
               })
               .removeClass('sticky-stopped')
@@ -112,9 +118,25 @@
             }
             height = elHeight(el);
             $(this).scroll();
-          })
+          });
           
           el.addClass('sticky-processed');
+
+	        win.resize(function() {
+		        el.css({
+			        position: '',
+			        left    : ''
+		        });
+		        left = el.offset().left;
+
+		        // Change the left only if item was fixed
+		        if (!el.hasClass('sticky-inactive')) {
+			        el.css({
+				        position: 'fixed',
+				        left    : left + 'px'
+			        });
+		        }
+	        });
           
           // start it off
           win.scroll();
