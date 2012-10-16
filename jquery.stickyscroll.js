@@ -19,6 +19,8 @@
         
         var settings;
         
+        options = $.extend(options, {});
+        
         if (options.mode !== 'auto' && options.mode !== 'manual') {
           if (options.container) {
             options.mode = 'auto';
@@ -37,7 +39,7 @@
         
         function bottomBoundary() {
           return $(document).height() - settings.container.offset().top
-            - settings.container.attr('offsetHeight');
+            - settings.container.height();
         }
 
         function topBoundary() {
@@ -45,7 +47,7 @@
         }
 
         function elHeight(el) {
-          return $(el).attr('offsetHeight');
+          return $(el).height();
         }
         
         // make sure user input is a jQuery object
@@ -68,8 +70,9 @@
 
           var el = $(this),
             win = $(window),
-            id = Date.now() + index,
-            height = elHeight(el);
+	          id = new Date().getTime() + index,
+            height = elHeight(el),
+	          left = el.offset().left;
             
           el.data('sticky-id', id);
           
@@ -77,7 +80,7 @@
             var top = $(document).scrollTop(),
               bottom = $(document).height() - top - height;
 
-            if(bottom <= settings.bottomBoundary) {
+            if(bottom >= settings.bottomBoundary) {
               el.offset({
                 top: $(document).height() - settings.bottomBoundary - height
               })
@@ -86,8 +89,10 @@
               .addClass('sticky-stopped');
             }
             else if(top > settings.topBoundary) {
-              el.offset({
-                top: $(window).scrollTop()
+              el.css({
+                position: 'fixed',
+                top     : 0,
+                left    : left
               })
               .removeClass('sticky-stopped')
               .removeClass('sticky-inactive')
@@ -97,6 +102,7 @@
               el.css({
                 position: '',
                 top: '',
+	              left: '',
                 bottom: ''
               })
               .removeClass('sticky-stopped')
@@ -104,21 +110,35 @@
               .addClass('sticky-inactive');
             }
           });
-          
-          win.bind('resize.stickyscroll-' + id, function() {
-            if (settings.mode === 'auto') {
-              settings.topBoundary = topBoundary();
-              settings.bottomBoundary = bottomBoundary();
-            }
-            height = elHeight(el);
-            $(this).scroll();
-          })
+
+	        win.bind('resize.stickyscroll-' + id, function () {
+		        if (settings.mode === 'auto') {
+			        settings.topBoundary = topBoundary();
+			        settings.bottomBoundary = bottomBoundary();
+		        }
+		        height = elHeight(el);
+		        el.css({
+			        position: '',
+			        left    : ''
+		        });
+
+		        left = el.offset().left;
+
+		        // Change the left only if item was fixed
+		        if (!el.hasClass('sticky-inactive')) {
+			        el.css({
+				        position: 'fixed',
+				        left    : left + 'px'
+			        });
+		        }
+
+		        $(this).scroll();
+	        });
           
           el.addClass('sticky-processed');
-          
+
           // start it off
           win.scroll();
-
         });
         
       },
