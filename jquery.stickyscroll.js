@@ -80,7 +80,7 @@
             var top = $(document).scrollTop(),
               bottom = $(document).height() - top - height;
 
-            if(bottom <= settings.bottomBoundary) {
+            if(bottom >= settings.bottomBoundary) {
               el.offset({
                 top: $(document).height() - settings.bottomBoundary - height
               })
