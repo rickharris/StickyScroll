@@ -110,23 +110,18 @@
               .addClass('sticky-inactive');
             }
           });
-          
-          win.bind('resize.stickyscroll-' + id, function() {
-            if (settings.mode === 'auto') {
-              settings.topBoundary = topBoundary();
-              settings.bottomBoundary = bottomBoundary();
-            }
-            height = elHeight(el);
-            $(this).scroll();
-          });
-          
-          el.addClass('sticky-processed');
 
-	        win.resize(function() {
+	        win.bind('resize.stickyscroll-' + id, function () {
+		        if (settings.mode === 'auto') {
+			        settings.topBoundary = topBoundary();
+			        settings.bottomBoundary = bottomBoundary();
+		        }
+		        height = elHeight(el);
 		        el.css({
 			        position: '',
 			        left    : ''
 		        });
+
 		        left = el.offset().left;
 
 		        // Change the left only if item was fixed
@@ -136,11 +131,14 @@
 				        left    : left + 'px'
 			        });
 		        }
+
+		        $(this).scroll();
 	        });
           
+          el.addClass('sticky-processed');
+
           // start it off
           win.scroll();
-
         });
         
       },
