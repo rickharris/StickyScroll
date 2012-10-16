@@ -70,10 +70,10 @@
 
           var el = $(this),
             win = $(window),
-            id = Date.now() + index,
+	          id = new Date().getTime() + index,
             height = elHeight(el),
 	          left = el.offset().left;
-
+            
           el.data('sticky-id', id);
           
           win.bind('scroll.stickyscroll-' + id, function() {
@@ -89,13 +89,11 @@
               .addClass('sticky-stopped');
             }
             else if(top > settings.topBoundary) {
-              el.offset({
-//                top: $(window).scrollTop()
-              }).css({
-		              position: 'fixed',
-		              top     : 0,
-		              left    : left
-	              })
+              el.css({
+                position: 'fixed',
+                top     : 0,
+                left    : left
+              })
               .removeClass('sticky-stopped')
               .removeClass('sticky-inactive')
               .addClass('sticky-active');
