@@ -10,7 +10,10 @@
  *
 */
 
+/*global jQuery */
 (function($) {
+  'use strict';
+  
   $.fn.stickyScroll = function(options) {
   
     var methods = {
@@ -18,6 +21,8 @@
       init : function(options) {
         
         var settings;
+        
+        options = $.extend(options, {});
         
         if (options.mode !== 'auto' && options.mode !== 'manual') {
           if (options.container) {
@@ -32,26 +37,28 @@
           mode: 'auto', // 'auto' or 'manual'
           container: $('body'),
           topBoundary: null,
-          bottomBoundary: null
+          bottomBoundary: null,
+          offsetTop: null
         }, options);
         
         function bottomBoundary() {
-          return $(document).height() - settings.container.offset().top
-            - settings.container.attr('offsetHeight');
+          return $(document).height() - settings.container.offset().top -
+            settings.container.outerHeight(false);
         }
 
         function topBoundary() {
-          return settings.container.offset().top
+          return settings.container.offset().top;
         }
 
         function elHeight(el) {
-          return $(el).attr('offsetHeight');
+          return $(el).outerHeight(false);
         }
         
         // make sure user input is a jQuery object
         settings.container = $(settings.container);
         if(!settings.container.length) {
-          if(console) {
+          if(typeof console === 'object') {
+            /*jshint devel:true */
             console.log('StickyScroll: the element ' + options.container +
               ' does not exist, we\'re throwing in the towel');
           }
@@ -68,16 +75,16 @@
 
           var el = $(this),
             win = $(window),
-            id = Date.now() + index,
-            height = elHeight(el);
+            id = Date.now() + index;
             
           el.data('sticky-id', id);
           
           win.bind('scroll.stickyscroll-' + id, function() {
-            var top = $(document).scrollTop(),
-              bottom = $(document).height() - top - height;
+            var height = elHeight(el);
+            var top = $(document).scrollTop();
+            var bottom = $(document).height() - top - height;
 
-            if(bottom <= settings.bottomBoundary) {
+            if((bottom - Number(settings.offsetTop)) <= settings.bottomBoundary) {
               el.offset({
                 top: $(document).height() - settings.bottomBoundary - height
               })
@@ -85,9 +92,9 @@
               .removeClass('sticky-inactive')
               .addClass('sticky-stopped');
             }
-            else if(top > settings.topBoundary) {
+            else if((top + Number(settings.offsetTop)) > settings.topBoundary) {
               el.offset({
-                top: $(window).scrollTop()
+                top: $(window).scrollTop() + Number(settings.offsetTop)
               })
               .removeClass('sticky-stopped')
               .removeClass('sticky-inactive')
@@ -110,9 +117,8 @@
               settings.topBoundary = topBoundary();
               settings.bottomBoundary = bottomBoundary();
             }
-            height = elHeight(el);
             $(this).scroll();
-          })
+          });
           
           el.addClass('sticky-processed');
           
@@ -154,7 +160,8 @@
       return methods.init.apply(this, arguments);
     }
     
-    else if(console) {
+    else if(typeof console === 'object') {
+      /*jshint devel:true */
       console.log('Method' + options +
         ' does not exist on jQuery.stickyScroll');
     }
