@@ -71,14 +71,14 @@
 
           var el = $(this),
             win = $(window),
-            id = Date.now() + index,
-            height = elHeight(el);
+            id = Date.now() + index;
             
           el.data('sticky-id', id);
           
           win.bind('scroll.stickyscroll-' + id, function() {
-            var top = $(document).scrollTop(),
-              bottom = $(document).height() - top - height;
+            var height = elHeight(el);
+            var top = $(document).scrollTop();
+            var bottom = $(document).height() - top - height;
 
             if((bottom - Number(settings.offsetTop)) <= settings.bottomBoundary) {
               el.offset({
@@ -113,7 +113,6 @@
               settings.topBoundary = topBoundary();
               settings.bottomBoundary = bottomBoundary();
             }
-            height = elHeight(el);
             $(this).scroll();
           })
           
