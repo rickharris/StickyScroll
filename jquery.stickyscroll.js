@@ -10,7 +10,10 @@
  *
 */
 
+/*global jQuery */
 (function($) {
+  'use strict';
+  
   $.fn.stickyScroll = function(options) {
   
     var methods = {
@@ -39,8 +42,8 @@
         }, options);
         
         function bottomBoundary() {
-          return $(document).height() - settings.container.offset().top
-            - settings.container.outerHeight(false);
+          return $(document).height() - settings.container.offset().top -
+            settings.container.outerHeight(false);
         }
 
         function topBoundary() {
@@ -54,7 +57,8 @@
         // make sure user input is a jQuery object
         settings.container = $(settings.container);
         if(!settings.container.length) {
-          if(console) {
+          if(typeof console === 'object') {
+            /*jshint devel:true */
             console.log('StickyScroll: the element ' + options.container +
               ' does not exist, we\'re throwing in the towel');
           }
@@ -114,7 +118,7 @@
               settings.bottomBoundary = bottomBoundary();
             }
             $(this).scroll();
-          })
+          });
           
           el.addClass('sticky-processed');
           
@@ -156,7 +160,8 @@
       return methods.init.apply(this, arguments);
     }
     
-    else if(console) {
+    else if(typeof console === 'object') {
+      /*jshint devel:true */
       console.log('Method' + options +
         ' does not exist on jQuery.stickyScroll');
     }
