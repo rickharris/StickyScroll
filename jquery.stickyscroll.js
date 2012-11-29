@@ -34,20 +34,21 @@
           mode: 'auto', // 'auto' or 'manual'
           container: $('body'),
           topBoundary: null,
-          bottomBoundary: null
+          bottomBoundary: null,
+          offsetTop: null
         }, options);
         
         function bottomBoundary() {
           return $(document).height() - settings.container.offset().top
-            - settings.container.attr('offsetHeight');
+            - settings.container.outerHeight(false);
         }
 
         function topBoundary() {
-          return settings.container.offset().top
+          return settings.container.offset().top;
         }
 
         function elHeight(el) {
-          return $(el).attr('offsetHeight');
+          return $(el).outerHeight(false);
         }
         
         // make sure user input is a jQuery object
@@ -79,7 +80,7 @@
             var top = $(document).scrollTop(),
               bottom = $(document).height() - top - height;
 
-            if(bottom <= settings.bottomBoundary) {
+            if((bottom - Number(settings.offsetTop)) <= settings.bottomBoundary) {
               el.offset({
                 top: $(document).height() - settings.bottomBoundary - height
               })
@@ -87,9 +88,9 @@
               .removeClass('sticky-inactive')
               .addClass('sticky-stopped');
             }
-            else if(top > settings.topBoundary) {
+            else if((top + Number(settings.offsetTop)) > settings.topBoundary) {
               el.offset({
-                top: $(window).scrollTop()
+                top: $(window).scrollTop() + Number(settings.offsetTop)
               })
               .removeClass('sticky-stopped')
               .removeClass('sticky-inactive')
