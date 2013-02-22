@@ -37,7 +37,7 @@
         
         function bottomBoundary() {
           return $(document).height() - settings.container.offset().top
-            - settings.container.attr('offsetHeight');
+            - settings.container.height();
         }
 
         function topBoundary() {
@@ -45,7 +45,7 @@
         }
 
         function elHeight(el) {
-          return $(el).attr('offsetHeight');
+          return $(el).height();
         }
         
         // make sure user input is a jQuery object
